@@ -8,48 +8,47 @@
 
 import UIKit
 
-class ViewTweetViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ViewTweetViewController: UIViewController {
 
-    @IBOutlet weak var tweetDetailsTableView: UITableView!
+    @IBOutlet weak var userNameLabel: UILabel!
+    @IBOutlet weak var screennameLabel: UILabel!
+    @IBOutlet weak var userImageView: UIImageView!
+    @IBOutlet weak var tweetTextLabel: UILabel!
+    @IBOutlet weak var timestampLabel: UILabel!
     var tweet: Tweet!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tweetDetailsTableView.delegate = self
-        tweetDetailsTableView.dataSource = self
-        // Do any additional setup after loading the view.
-        tweetDetailsTableView.reloadData()
+        populateUI()
+        println(tweet.id!)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell: TweetDetailsCell!
-        if indexPath.row == 0 {
-            cell = tweetDetailsTableView.dequeueReusableCellWithIdentifier("TweetDetailsCell") as TweetDetailsCell!
-            println(self.tweet)
-            cell.tweet = self.tweet
+
+    func populateUI() {
+        userNameLabel.text = tweet.name!
+        screennameLabel.text = "@" + tweet.screenname!
+        tweetTextLabel.text = tweet.text
+        var profileImageUrl = tweet.user!.profileImageUrl
+        userImageView.setImageWithURLRequest(NSURLRequest(URL: NSURL(string: profileImageUrl!)), placeholderImage: nil, success: { (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) -> Void in
+            self.userImageView.image = image
+            
+            UIView.animateWithDuration(0.5, animations: { () -> Void in
+                self.userImageView.alpha = 1.0
+                }, completion: { (Bool) -> Void in
+            })
+            }) { (request: NSURLRequest!, response: NSHTTPURLResponse!, error: NSError!) -> Void in
         }
-        return cell
-    }
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        println("Shil")
-
-        return 1
     }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        var destinationViewController = segue.destinationViewController as UINavigationController
+        var createTweetViewController = destinationViewController.viewControllers![0] as CreateTweetViewController
+        createTweetViewController.replyToTweet = tweet as Tweet
     }
-    */
 
 }

@@ -31,17 +31,26 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
         })
     }
 
+    func composeTweet(params: NSDictionary?, completion: (tweet: Tweet?, error: NSError?) -> ()) {
+        POST("1.1/statuses/update.json", parameters: params, success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
+            var tweet = Tweet(tweetData: response as NSDictionary)
+            completion(tweet: tweet, error: nil)
+            }, failure: { (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
+                println("Error posting status")
+                completion(tweet: nil, error: error)
+        })
+    }
+
     func loginWithCompletion(completion: (user: User?, error: NSError?) -> ()) {
         loginCompletion = completion
         
         // Fetch request token & redirect to authorization page
-        TwitterClient.sharedInstance.requestSerializer.removeAccessToken()
+        requestSerializer.removeAccessToken()
         
-        TwitterClient.sharedInstance.fetchRequestTokenWithPath("oauth/request_token", method: "GET", callbackURL: NSURL(string:"cptwitterdemo://oauth"), scope: nil, success: { (requestToken: BDBOAuthToken!) -> Void in
-        var auth = NSURL(string: "https://api.twitter.com/oauth/authenticate?oauth_token=\(requestToken.token)")
+        fetchRequestTokenWithPath("oauth/request_token", method: "GET", callbackURL: NSURL(string:"cptwitterdemo://oauth"), scope: nil, success: { (requestToken: BDBOAuthToken!) -> Void in
+        var authURL = NSURL(string: "https://api.twitter.com/oauth/authenticate?oauth_token=\(requestToken.token)")
         
-        UIApplication.sharedApplication().openURL(auth)
-        println("Got request token")
+        UIApplication.sharedApplication().openURL(authURL)
         
         }) { (error: NSError!) -> Void in
             println("Failed to get request token")
@@ -52,8 +61,8 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
     func openURL(url: NSURL) {
         fetchAccessTokenWithPath("oauth/access_token", method: "POST", requestToken: BDBOAuthToken (queryString: url.query), success: { (accessToken:BDBOAuthToken!) -> Void in
 
-            TwitterClient.sharedInstance.requestSerializer.saveAccessToken(accessToken)
-            TwitterClient.sharedInstance.GET("1.1/account/verify_credentials.json", parameters: nil, success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
+            self.requestSerializer.saveAccessToken(accessToken)
+            self.GET("1.1/account/verify_credentials.json", parameters: nil, success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
                 var user = User(dictionary: response as NSDictionary)
                 User.currentUser = user
                 self.loginCompletion?(user: user, error: nil)

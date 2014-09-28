@@ -12,7 +12,7 @@ class Tweet: NSObject {
     var user: User?
     var name: String?
     var screenname: String?
-    var id: String?
+    var id: Int?
     var text: String?
     var retweetCount: String?
     var createdAtString: String?
@@ -25,6 +25,8 @@ class Tweet: NSObject {
         screenname = user!.screenname
         
         text = tweetData["text"] as? String
+        id = tweetData["id"] as? Int
+//        println(tweetData)
         createdAtString = tweetData["created_at"] as? String
         var formatter = NSDateFormatter()
         formatter.dateFormat = "EEE MMM d HH:mm:ss Z y"
