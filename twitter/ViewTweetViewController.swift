@@ -8,16 +8,17 @@
 
 import UIKit
 
-class ViewTweetViewController: UIViewController {
+class ViewTweetViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
+    @IBOutlet weak var tweetDetailsTableView: UITableView!
     var tweet: Tweet!
 
-    override func viewWillAppear(animated: Bool) {
-         }
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        tweetDetailsTableView.delegate = self
+        tweetDetailsTableView.dataSource = self
         // Do any additional setup after loading the view.
+        tweetDetailsTableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -25,6 +26,21 @@ class ViewTweetViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        var cell: TweetDetailsCell!
+        if indexPath.row == 0 {
+            cell = tweetDetailsTableView.dequeueReusableCellWithIdentifier("TweetDetailsCell") as TweetDetailsCell!
+            println(self.tweet)
+            cell.tweet = self.tweet
+        }
+        return cell
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        println("Shil")
+
+        return 1
+    }
 
     /*
     // MARK: - Navigation
