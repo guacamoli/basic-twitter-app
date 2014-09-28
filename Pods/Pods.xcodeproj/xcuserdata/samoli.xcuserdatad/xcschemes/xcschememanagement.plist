@@ -19,6 +19,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-PrettyTimestamp.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -27,22 +32,27 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>01466662E58F4317B9CAE49E</key>
+		<key>14663CD09E52401E99108A77</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>25A621D96E924BF18D7E40C9</key>
+		<key>3AB806DB20F54CCDAE4E22EF</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5B180C7F506345F3B8614701</key>
+		<key>4413A15717CD4BE78CA127B5</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C042532CF0984D37BFDF7CA7</key>
+		<key>5D6F0F2CF5934DA5B710B846</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>84C976E5A89B42D288968B83</key>
 		<dict>
 			<key>primary</key>
 			<true/>

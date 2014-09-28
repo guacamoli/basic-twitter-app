@@ -15,7 +15,6 @@ class Tweet: NSObject {
     var id: String?
     var text: String?
     var retweetCount: String?
-    var profile_image_url: String?
     var createdAtString: String?
     var createdAt: NSDate?
     var location: String?
@@ -27,7 +26,6 @@ class Tweet: NSObject {
         
         text = tweetData["text"] as? String
         createdAtString = tweetData["created_at"] as? String
-//        profile_image_url = user!.profileImageUrl as? String
         var formatter = NSDateFormatter()
         formatter.dateFormat = "EEE MMM d HH:mm:ss Z y"
         createdAt = formatter.dateFromString(createdAtString!)

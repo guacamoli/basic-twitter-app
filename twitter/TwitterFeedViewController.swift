@@ -42,7 +42,7 @@ class TwitterFeedViewController: UIViewController, UITableViewDelegate, UITableV
     }
 
     func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
-        
+        twitterFeedTableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -52,14 +52,15 @@ class TwitterFeedViewController: UIViewController, UITableViewDelegate, UITableV
     @IBAction func onLogout(sender: AnyObject) {
         User.currentUser?.logout()
     }
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        var destinationViewController = segue.destinationViewController as UINavigationController
+        var viewTweetViewController = destinationViewController.viewControllers![0] as ViewTweetViewController
+        viewTweetViewController.tweet = sender.tweetInfo as Tweet
     }
-    */
 
 }

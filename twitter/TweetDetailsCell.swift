@@ -1,28 +1,27 @@
 //
-//  TweetCell.swift
+//  TweetDetailsCell.swift
 //  twitter
 //
-//  Created by Sahil Amoli on 9/25/14.
+//  Created by Sahil Amoli on 9/28/14.
 //  Copyright (c) 2014 Sahil Amoli. All rights reserved.
 //
 
 import UIKit
 
-class TweetCell: UITableViewCell {
+class TweetDetailsCell: UITableViewCell {
 
-    @IBOutlet weak var userImageView: UIImageView!
-    @IBOutlet weak var tweetTextLabel: UILabel!
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var screennameLabel: UILabel!
+    @IBOutlet weak var userImageView: UIImageView!
+    @IBOutlet weak var tweetTextLabel: UILabel!
     @IBOutlet weak var timestampLabel: UILabel!
-
-    var tweetInfo: Tweet! {
-        willSet(info) {
-            tweetTextLabel.text = info.text
-            userNameLabel.text = info.name
-            screennameLabel.text = "@" + info.screenname!
-            timestampLabel.text = info.createdAt?.prettyTimestampSinceNow()
-            var profileImageUrl = info.user!.profileImageUrl
+    
+    var tweet: Tweet! {
+        willSet(tweetInfo) {
+            userNameLabel.text = tweetInfo.name
+            screennameLabel.text = "@" + tweetInfo.screenname!
+            tweetTextLabel.text = tweetInfo.text
+            var profileImageUrl = tweetInfo.user!.profileImageUrl
             userImageView.setImageWithURLRequest(NSURLRequest(URL: NSURL(string: profileImageUrl!)), placeholderImage: nil, success: { (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) -> Void in
                 self.userImageView.image = image
                 
@@ -35,7 +34,6 @@ class TweetCell: UITableViewCell {
 
         }
     }
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

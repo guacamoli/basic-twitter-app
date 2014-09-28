@@ -21,6 +21,7 @@
 		857A488119D7526A00DD2AD0 /* TwitterClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857A488019D7526A00DD2AD0 /* TwitterClient.swift */; };
 		857A488319D759B000DD2AD0 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857A488219D759B000DD2AD0 /* LoginViewController.swift */; };
 		857A488519D7794400DD2AD0 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857A488419D7794400DD2AD0 /* User.swift */; };
+		857A488719D7EBC100DD2AD0 /* TweetDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857A488619D7EBC100DD2AD0 /* TweetDetailsCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +55,7 @@
 		857A488019D7526A00DD2AD0 /* TwitterClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterClient.swift; sourceTree = "<group>"; };
 		857A488219D759B000DD2AD0 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		857A488419D7794400DD2AD0 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		857A488619D7EBC100DD2AD0 /* TweetDetailsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TweetDetailsCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +154,7 @@
 			isa = PBXGroup;
 			children = (
 				8560847E19D52B07001631FB /* TweetCell.swift */,
+				857A488619D7EBC100DD2AD0 /* TweetDetailsCell.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -324,6 +327,7 @@
 				857A488519D7794400DD2AD0 /* User.swift in Sources */,
 				857A488119D7526A00DD2AD0 /* TwitterClient.swift in Sources */,
 				8560845719D52720001631FB /* AppDelegate.swift in Sources */,
+				857A488719D7EBC100DD2AD0 /* TweetDetailsCell.swift in Sources */,
 				8560847A19D527D2001631FB /* ViewTweetViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

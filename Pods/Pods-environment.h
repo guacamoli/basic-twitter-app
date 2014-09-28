@@ -60,3 +60,9 @@
 #define COCOAPODS_VERSION_MINOR_MBProgressHUD 9
 #define COCOAPODS_VERSION_PATCH_MBProgressHUD 0
 
+// PrettyTimestamp
+#define COCOAPODS_POD_AVAILABLE_PrettyTimestamp
+#define COCOAPODS_VERSION_MAJOR_PrettyTimestamp 1
+#define COCOAPODS_VERSION_MINOR_PrettyTimestamp 1
+#define COCOAPODS_VERSION_PATCH_PrettyTimestamp 0
+

@@ -10,6 +10,10 @@ import UIKit
 
 class ViewTweetViewController: UIViewController {
 
+    var tweet: Tweet!
+
+    override func viewWillAppear(animated: Bool) {
+         }
     override func viewDidLoad() {
         super.viewDidLoad()
 
