@@ -21,8 +21,9 @@ class TweetCell: UITableViewCell {
             tweetTextLabel.text = info.text
             userNameLabel.text = info.name
             screennameLabel.text = "@" + info.screenname!
-            timestampLabel.text = info.createdAt?.prettyTimestampSinceNow()
+            timestampLabel.text = info.timeIntervalAsStr
             var profileImageUrl = info.user!.profileImageUrl
+            userImageView.alpha = 0.0
             userImageView.setImageWithURLRequest(NSURLRequest(URL: NSURL(string: profileImageUrl!)), placeholderImage: nil, success: { (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) -> Void in
                 self.userImageView.image = image
                 
@@ -39,6 +40,7 @@ class TweetCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        userImageView.layer.cornerRadius = 5.0
     }
 
     override func setSelected(selected: Bool, animated: Bool) {

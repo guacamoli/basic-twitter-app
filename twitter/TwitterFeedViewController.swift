@@ -60,13 +60,11 @@ class TwitterFeedViewController: UIViewController, UITableViewDelegate, UITableV
         // Get the new view controller using segue.destinationViewController.
         var destinationViewController = segue.destinationViewController as UINavigationController
 
-        println(segue.identifier)
         if segue.identifier == "TweetDetailsView" {
             var viewTweetViewController = destinationViewController.viewControllers![0] as ViewTweetViewController
             viewTweetViewController.tweet = sender.tweetInfo as Tweet
         } else if segue.identifier == "ComposeTweetView" {
             var viewTweetViewController = destinationViewController.viewControllers![0] as CreateTweetViewController
-//            viewTweetViewController.tweet = sender.tweetInfo as Tweet
         }
     }
 
