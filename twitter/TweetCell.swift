@@ -8,10 +8,10 @@
 
 import UIKit
 
-class TweetCell: UITableViewCell {
+class TweetCell: UITableViewCell, TTTAttributedLabelDelegate {
 
     @IBOutlet weak var userImageView: UIImageView!
-    @IBOutlet weak var tweetTextLabel: UILabel!
+    @IBOutlet weak var tweetTextLabel: TTTAttributedLabel!
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var screennameLabel: UILabel!
     @IBOutlet weak var timestampLabel: UILabel!
@@ -46,7 +46,10 @@ class TweetCell: UITableViewCell {
                 retweetedByLabel.text = info.retweetedBy!
             }
 
+            tweetTextLabel.enabledTextCheckingTypes = NSTextCheckingType.Link.toRaw()
+            tweetTextLabel.delegate = self
             tweetTextLabel.text = info.text
+            
             userNameLabel.text = info.name
             screennameLabel.text = "@" + info.screenname!
             timestampLabel.text = info.timeIntervalAsStr
@@ -77,6 +80,10 @@ class TweetCell: UITableViewCell {
         }
     }
     
+    func attributedLabel(label: TTTAttributedLabel!, didSelectLinkWithTextCheckingResult result: NSTextCheckingResult!) {
+        UIApplication.sharedApplication().openURL(result.URL!)
+    }
+
     func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         // Get the new view controller using segue.destinationViewController.
         var destinationViewController = segue.destinationViewController as UINavigationController

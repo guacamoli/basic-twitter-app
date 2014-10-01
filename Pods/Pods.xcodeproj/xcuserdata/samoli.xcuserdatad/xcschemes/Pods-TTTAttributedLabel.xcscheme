@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "21493D6474F4429DA195E0C4"
-               BuildableName = "libPods-PrettyTimestamp.a"
-               BlueprintName = "Pods-PrettyTimestamp"
+               BlueprintIdentifier = "3E9F309686FF4D618F82C9D4"
+               BuildableName = "libPods-TTTAttributedLabel.a"
+               BlueprintName = "Pods-TTTAttributedLabel"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

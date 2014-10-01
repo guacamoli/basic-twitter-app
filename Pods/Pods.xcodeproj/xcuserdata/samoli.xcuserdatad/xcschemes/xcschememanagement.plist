@@ -19,7 +19,7 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-PrettyTimestamp.xcscheme</key>
+		<key>Pods-TTTAttributedLabel.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -32,27 +32,27 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>21493D6474F4429DA195E0C4</key>
+		<key>343E0C8C89BC45849F7CF65D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>25FE120E764945DABA8D18B0</key>
+		<key>3E9F309686FF4D618F82C9D4</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>298EBFE246DA4D5EB46DF2A1</key>
+		<key>6AC0BF52252F4FBDAE306B04</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6BD13C9A466041958F7152D6</key>
+		<key>76C79F811A694E9FA98187CB</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>ABC02CD2CF95431A85193F1B</key>
+		<key>FEA5583F4B99470DACAEA34E</key>
 		<dict>
 			<key>primary</key>
 			<true/>

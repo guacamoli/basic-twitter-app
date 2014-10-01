@@ -12,7 +12,7 @@ protocol ViewTweetViewControllerDelegate {
     func didAddReplies(viewTweetViewController: ViewTweetViewController, newTweets: [Tweet])
 }
 
-class ViewTweetViewController: UIViewController, CreateTweetViewControllerDelegate {
+class ViewTweetViewController: UIViewController, CreateTweetViewControllerDelegate, TTTAttributedLabelDelegate {
     var delegate: ViewTweetViewControllerDelegate? = nil
 
     @IBOutlet weak var retweetCountLabel: UILabel!
@@ -20,7 +20,7 @@ class ViewTweetViewController: UIViewController, CreateTweetViewControllerDelega
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var screennameLabel: UILabel!
     @IBOutlet weak var userImageView: UIImageView!
-    @IBOutlet weak var tweetTextLabel: UILabel!
+    @IBOutlet weak var tweetTextLabel: TTTAttributedLabel!
     @IBOutlet weak var timestampLabel: UILabel!
     @IBOutlet weak var retweetButton: UIButton!
     @IBOutlet weak var favoriteButton: UIButton!
@@ -47,9 +47,6 @@ class ViewTweetViewController: UIViewController, CreateTweetViewControllerDelega
     override func viewWillDisappear(animated: Bool) {
         self.delegate?.didAddReplies(self, newTweets: newTweets)
 
-    }
-
-    @IBAction func onReply(sender: AnyObject) {
     }
 
     @IBAction func onRetweet(sender: AnyObject) {
@@ -87,6 +84,8 @@ class ViewTweetViewController: UIViewController, CreateTweetViewControllerDelega
     func populateUI() {
         userNameLabel.text = tweet.name!
         screennameLabel.text = "@" + tweet.screenname!
+        tweetTextLabel.enabledTextCheckingTypes = NSTextCheckingType.Link.toRaw()
+        tweetTextLabel.delegate = self
         tweetTextLabel.text = tweet.text
         retweetCountLabel.text = String(tweet.retweetCount!)
         favoritesCountLabel.text = String(tweet.favoriteCount!)
@@ -108,6 +107,10 @@ class ViewTweetViewController: UIViewController, CreateTweetViewControllerDelega
             })
             }) { (request: NSURLRequest!, response: NSHTTPURLResponse!, error: NSError!) -> Void in
         }
+    }
+    
+    func attributedLabel(label: TTTAttributedLabel!, didSelectLinkWithTextCheckingResult result: NSTextCheckingResult!) {
+        UIApplication.sharedApplication().openURL(result.URL!)
     }
     
     func didComposeNewTweet(createTweetViewController: CreateTweetViewController, tweet: Tweet) {

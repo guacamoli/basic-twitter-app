@@ -55,7 +55,6 @@ class TwitterFeedViewController: UIViewController, UITableViewDelegate, UITableV
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        println("On row: \(indexPath.row)")
         var cell = twitterFeedTableView.dequeueReusableCellWithIdentifier("TweetCell") as TweetCell
         cell.tweetInfo = tweets[indexPath.row] as Tweet
         cell.replyToButton.tag = indexPath.row
