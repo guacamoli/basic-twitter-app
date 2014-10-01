@@ -1,5 +1,6 @@
 basic-twitter-app
 =================
+Time Spent: 20 hours
 
 iOS Twitter Application in Swift
 
