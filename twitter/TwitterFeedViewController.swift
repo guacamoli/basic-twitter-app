@@ -12,8 +12,7 @@ import UIKit
 class TwitterFeedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CreateTweetViewControllerDelegate, ViewTweetViewControllerDelegate {
 
     @IBOutlet weak var twitterFeedTableView: UITableView!
-    
-    let pullToRefresh = "Pull down to refresh"
+
     var refreshControl: UIRefreshControl!
     var tweets: [Tweet] = []
     
@@ -54,14 +53,11 @@ class TwitterFeedViewController: UIViewController, UITableViewDelegate, UITableV
         // Show loading spinner
         twitterFeedTableView.reloadData()
     }
-    
-    override func viewWillDisappear(animated: Bool) {
-        twitterFeedTableView.reloadData()
-    }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = twitterFeedTableView.dequeueReusableCellWithIdentifier("TweetCell") as TweetCell
         cell.tweetInfo = tweets[indexPath.row] as Tweet
+        cell.replyToButton.tag = indexPath.row
         return cell
     }
 
@@ -72,7 +68,13 @@ class TwitterFeedViewController: UIViewController, UITableViewDelegate, UITableV
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tweets.count
     }
-
+    
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.row + 1 == tweets.count {
+            requestMoreData()
+        }
+    }
+    
     @IBAction func onLogout(sender: AnyObject) {
         User.currentUser?.logout()
     }
@@ -91,10 +93,6 @@ class TwitterFeedViewController: UIViewController, UITableViewDelegate, UITableV
     
     func addRefreshControl() {
         refreshControl = UIRefreshControl()
-        // Create color attribute
-        var colorAttribute =  [NSForegroundColorAttributeName: UIColor.blackColor()]
-        // Set attributed text
-        refreshControl.attributedTitle = NSAttributedString(string: pullToRefresh, attributes: colorAttribute)
         // Add target for refresh
         refreshControl.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
         
@@ -120,6 +118,22 @@ class TwitterFeedViewController: UIViewController, UITableViewDelegate, UITableV
             self.refreshControl.endRefreshing()
         })
     }
+    
+    func requestMoreData() {
+        var lastTweetIndex = tweets.count - 1
+        var lastTweetId = String(tweets[lastTweetIndex].id!)
+        var params = ["max_id": lastTweetId]
+        TwitterClient.sharedInstance.homeTimeLineWithParams(params, completion: { (tweets, error) -> () in
+            if error == nil {
+                // If there was no error, append the tweets, reload table data
+                for tweet in tweets! {
+                    self.tweets.append(tweet)
+                }
+
+                self.twitterFeedTableView.reloadData()
+            }
+        })
+    }
 
     // MARK: - Navigation
 
@@ -134,6 +148,11 @@ class TwitterFeedViewController: UIViewController, UITableViewDelegate, UITableV
         } else if segue.identifier == "ComposeTweetView" {
             var createTweetViewController = destinationViewController.viewControllers![0] as CreateTweetViewController
             createTweetViewController.delegate = self
+        } else if segue.identifier == "ReplyFromHome" {
+            var createTweetViewController = destinationViewController.viewControllers![0] as CreateTweetViewController
+            createTweetViewController.delegate = self
+            // The reply button has the tweet index "tagged" on!
+            createTweetViewController.replyToTweet = tweets[sender.tag]
         }
     }
 

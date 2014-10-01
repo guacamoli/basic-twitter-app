@@ -21,6 +21,7 @@ class TweetCell: UITableViewCell {
     @IBOutlet weak var favoriteLabel: UILabel!
     @IBOutlet weak var retweetedByLabel: UILabel!
     @IBOutlet weak var retweetedByImageView: UIImageView!
+    @IBOutlet weak var replyToButton: UIButton!
 
     @IBOutlet weak var retweetedByTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var retweetedByLabelHeightConstraint: NSLayoutConstraint!
