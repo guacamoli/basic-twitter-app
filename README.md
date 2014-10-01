@@ -26,4 +26,5 @@ Other:
 - [x] Custom launch screen
 
 Walkthrough of stories:
+
 ![walkthrough](https://sahil.box.com/shared/static/3y3g89f2v54o480y6hx3.gif)
