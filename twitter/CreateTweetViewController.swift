@@ -28,6 +28,7 @@ class CreateTweetViewController: UIViewController, UITextViewDelegate {
 
         userNameLabel.text = User.currentUser!.name
         screennameLabel.text = "@" + User.currentUser!.screenname!
+        userImageView.layer.cornerRadius = 5.0
         var profileImageUrl = User.currentUser!.profileImageUrl
         userImageView.setImageWithURLRequest(NSURLRequest(URL: NSURL(string: profileImageUrl!)), placeholderImage: nil, success: { (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) -> Void in
             self.userImageView.image = image
@@ -46,6 +47,8 @@ class CreateTweetViewController: UIViewController, UITextViewDelegate {
         } else {
             tweetButton.enabled = false
         }
+
+        navigationController?.navigationBar.tintColor = UIColor(red: CGFloat(0), green: CGFloat(132/255.0), blue: CGFloat(180/255.0), alpha: CGFloat(1))
 
         updateTweetCount()
         // Auto-focus the view so the keyboard comes up!
@@ -90,14 +93,22 @@ class CreateTweetViewController: UIViewController, UITextViewDelegate {
 
     func isValidTweet(tweetText: String) -> Bool {
         var charCount = countElements(tweetText)
-        if charCount > 0 && charCount <= 160 {
+        if charCount > 0 && charCount <= 140 {
             return true
         }
         return false
     }
 
     func updateTweetCount() {
-        var tweetCount = 160 - countElements(tweetTextView.text)
+        var tweetCount = 140 - countElements(tweetTextView.text)
+        if tweetCount < 0 {
+            navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(red: 212/255.0, green: 13/255.0, blue: 18/255.0, alpha: 0.5)]
+        } else if tweetCount < 20 {
+          navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(red: 92/255.0, green: 0, blue: 2/255.0, alpha: 0.5)]
+        } else {
+            navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(red: 136/255.0, green: 153/255.0, blue: 166/255.0, alpha: 0.5)]
+        }
+
         navigationItem.title = String(tweetCount) + " characters left"
     }
 }

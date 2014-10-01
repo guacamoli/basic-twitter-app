@@ -77,10 +77,6 @@ class TweetCell: UITableViewCell {
         }
     }
     
-    @IBAction func onReply(sender: AnyObject) {
-//        sender.performSegueWithIdentifier("sahil", sender: self)
-    }
-    
     func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         // Get the new view controller using segue.destinationViewController.
         var destinationViewController = segue.destinationViewController as UINavigationController
