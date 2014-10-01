@@ -12,7 +12,7 @@ iOS Twitter Application in Swift
 - [x] User can compose a new tweet by tapping on a compose button.
 - [x] User can tap on a tweet to view it, with controls to retweet, favorite, and reply.
 
-- [x] Optional: When composing, you should have a countdown in the upper right for the tweet limit.
+- [x] Optional: When composing, you should have a countdown in the upper right for the tweet limit. NOTE: it's not on the top left, but in the middle (title spot)
 - [x] Optional: After creating a new tweet, a user should be able to view it in the timeline immediately without refetching the timeline from the network.
 - [x] Optional: Retweeting and favoriting should increment the retweet and favorite count.
 - [x] Persist from one view controller to another
