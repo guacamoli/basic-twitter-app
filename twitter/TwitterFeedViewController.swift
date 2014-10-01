@@ -35,7 +35,7 @@ class TwitterFeedViewController: UIViewController, UITableViewDelegate, UITableV
         twitterFeedTableView.delegate = self
         twitterFeedTableView.dataSource = self
         twitterFeedTableView.rowHeight = UITableViewAutomaticDimension
-        
+        twitterFeedTableView.estimatedRowHeight = 80.0
         // Set navigation bar color
         var color: UIColor = UIColor(red: CGFloat(91/255.0), green: CGFloat(171/255.0), blue: CGFloat(229/255.0), alpha: CGFloat(1))
         navigationController?.navigationBar.barTintColor = color
@@ -62,7 +62,6 @@ class TwitterFeedViewController: UIViewController, UITableViewDelegate, UITableV
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = twitterFeedTableView.dequeueReusableCellWithIdentifier("TweetCell") as TweetCell
         cell.tweetInfo = tweets[indexPath.row] as Tweet
-        cell.contentView.layoutSubviews()
         return cell
     }
 
@@ -100,7 +99,7 @@ class TwitterFeedViewController: UIViewController, UITableViewDelegate, UITableV
         refreshControl.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
         
         // Add the refresh control to the table view
-        twitterFeedTableView.insertSubview(self.refreshControl, belowSubview: twitterFeedTableView)
+        twitterFeedTableView.insertSubview(self.refreshControl, atIndex: 0)
     }
     
     func refresh(sender: AnyObject) {

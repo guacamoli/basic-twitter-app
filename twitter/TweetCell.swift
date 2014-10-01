@@ -19,7 +19,18 @@ class TweetCell: UITableViewCell {
     @IBOutlet weak var favoriteButton: UIButton!
     @IBOutlet weak var retweetLabel: UILabel!
     @IBOutlet weak var favoriteLabel: UILabel!
+    @IBOutlet weak var retweetedByLabel: UILabel!
+    @IBOutlet weak var retweetedByImageView: UIImageView!
 
+    @IBOutlet weak var retweetedByTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var retweetedByLabelHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var retweetedByImageTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var retweetedByImageHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var userImageTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var userNameTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var userScreennameTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var timestampTopConstraint: NSLayoutConstraint!
+    
     let favoriteOnImage = UIImage(named: "favorite_on_small") as UIImage
     let favoriteOffImage = UIImage(named: "favorite_off_small") as UIImage
     let retweetOnImage = UIImage(named: "retweet_on_small") as UIImage
@@ -27,6 +38,13 @@ class TweetCell: UITableViewCell {
     
     var tweetInfo: Tweet! {
         willSet(info) {
+            if info.retweetedBy == nil {
+                setDefaultConstraints()
+            } else {
+                setRetweetConstraints()
+                retweetedByLabel.text = info.retweetedBy!
+            }
+
             tweetTextLabel.text = info.text
             userNameLabel.text = info.name
             screennameLabel.text = "@" + info.screenname!
@@ -102,6 +120,34 @@ class TweetCell: UITableViewCell {
         }
     }
     
+    func setDefaultConstraints() {
+        retweetedByTopConstraint.constant = 0
+        retweetedByImageTopConstraint.constant = 0
+        retweetedByLabelHeightConstraint.constant = 0
+        retweetedByImageHeightConstraint.constant = 0
+        userImageTopConstraint.constant = 10
+        userNameTopConstraint.constant = 10
+        userScreennameTopConstraint.constant = 11
+        timestampTopConstraint.constant = 10
+        
+        retweetedByLabel.hidden = true
+        retweetedByImageView.hidden = true
+    }
+
+    func setRetweetConstraints() {
+        retweetedByTopConstraint.constant = 5
+        retweetedByImageTopConstraint.constant = 5
+        retweetedByLabelHeightConstraint.constant = 15
+        retweetedByImageHeightConstraint.constant = 16
+        userImageTopConstraint.constant = 25
+        userNameTopConstraint.constant = 25
+        userScreennameTopConstraint.constant = 26
+        timestampTopConstraint.constant = 25
+        
+        retweetedByLabel.hidden = false
+        retweetedByImageView.hidden = false
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

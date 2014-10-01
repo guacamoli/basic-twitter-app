@@ -21,6 +21,7 @@ class Tweet: NSObject {
     var createdAtString: String?
     var createdAt: NSDate?
     var location: String?
+    var retweetedBy: String?
     var timeIntervalAsStr: String {
         get {
             let now = NSDate()
@@ -42,20 +43,27 @@ class Tweet: NSObject {
     }
 
     init(tweetData: NSDictionary) {
-        user = User(dictionary: tweetData["user"] as NSDictionary)
+        var tweetOwner = User(dictionary: tweetData["user"] as NSDictionary)
+        var tweetInfo = tweetData
+        var retweetedStatus: NSDictionary! = tweetData["retweeted_status"] as? NSDictionary
+
+
+        // If this is a retweet, use the original tweets data
+        if retweetedStatus != nil {
+            retweetedBy = tweetOwner.screenname
+            tweetInfo = retweetedStatus
+        }
+
+        user = User(dictionary: tweetInfo["user"] as NSDictionary)
         name = user!.name
         screenname = user!.screenname
-        isFavorited = tweetData["favorited"] as? Bool
-        text = tweetData["text"] as? String
-        id = tweetData["id"] as? Int
-        isRetweeted = tweetData["retweeted"] as? Bool
-        if isRetweeted == true {
-            println(tweetData)
-        }
-        println(tweetData["retweeted"])
-        retweetCount = tweetData["retweet_count"] as? Int
-        createdAtString = tweetData["created_at"] as? String
-        favoriteCount = tweetData["favorite_count"] as? Int
+        isFavorited = tweetInfo["favorited"] as? Bool
+        text = tweetInfo["text"] as? String
+        id = tweetInfo["id"] as? Int
+        isRetweeted = tweetInfo["retweeted"] as? Bool
+        retweetCount = tweetInfo["retweet_count"] as? Int
+        createdAtString = tweetInfo["created_at"] as? String
+        favoriteCount = tweetInfo["favorite_count"] as? Int
         var formatter = NSDateFormatter()
         formatter.dateFormat = "EEE MMM d HH:mm:ss Z y"
         createdAt = formatter.dateFromString(createdAtString!)
@@ -77,6 +85,7 @@ class Tweet: NSObject {
     
     func retweet() {
         TwitterClient.sharedInstance.retweetWithCompletion(id!, completion: { (response, error) -> () in
+
         })
     }
 
