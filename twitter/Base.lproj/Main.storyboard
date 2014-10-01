@@ -120,7 +120,6 @@
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
-                                                        <action selector="onReply:" destination="xMa-BH-T5N" eventType="touchUpInside" id="aUl-jy-tWX"/>
                                                         <segue destination="BD4-HI-wCL" kind="presentation" identifier="ReplyFromHome" id="Lws-4d-JeZ"/>
                                                     </connections>
                                                 </button>
@@ -610,6 +609,6 @@
         <image name="retweet_off_small.png" width="16" height="16"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="coS-lh-hPI"/>
+        <segue reference="NZ3-nH-4Np"/>
     </inferredMetricsTieBreakers>
 </document>
