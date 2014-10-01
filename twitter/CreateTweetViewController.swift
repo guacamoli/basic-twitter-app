@@ -8,9 +8,13 @@
 
 import UIKit
 
-class CreateTweetViewController: UIViewController, UITextViewDelegate {
-    @IBOutlet weak var tweetButton: UIBarButtonItem!
+protocol CreateTweetViewControllerDelegate {
+    func didComposeNewTweet(createTweetViewController: CreateTweetViewController, tweet: Tweet)
+}
 
+class CreateTweetViewController: UIViewController, UITextViewDelegate {
+    var delegate: CreateTweetViewControllerDelegate? = nil
+    @IBOutlet weak var tweetButton: UIBarButtonItem!
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var screennameLabel: UILabel!
     @IBOutlet weak var userImageView: UIImageView!
@@ -71,6 +75,7 @@ class CreateTweetViewController: UIViewController, UITextViewDelegate {
         if isValidTweet(tweetText) {
             TwitterClient.sharedInstance.composeTweet(params, completion: { (tweet, error) -> () in
                 if error == nil {
+                    self.delegate?.didComposeNewTweet(self, tweet: tweet!)
                     self.dismissViewControllerAnimated(true, completion: { () -> Void in })
                 } else {
                     println(error)

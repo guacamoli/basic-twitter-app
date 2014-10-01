@@ -8,7 +8,12 @@
 
 import UIKit
 
-class ViewTweetViewController: UIViewController {
+protocol ViewTweetViewControllerDelegate {
+    func didAddReplies(viewTweetViewController: ViewTweetViewController, newTweets: [Tweet])
+}
+
+class ViewTweetViewController: UIViewController, CreateTweetViewControllerDelegate {
+    var delegate: ViewTweetViewControllerDelegate? = nil
 
     @IBOutlet weak var retweetCountLabel: UILabel!
     @IBOutlet weak var favoritesCountLabel: UILabel!
@@ -21,7 +26,8 @@ class ViewTweetViewController: UIViewController {
     @IBOutlet weak var favoriteButton: UIButton!
     
     var tweet: Tweet!
-    
+    var newTweets: [Tweet] = [Tweet]()
+
     let favoriteOnImage = UIImage(named: "favorite_on") as UIImage
     let favoriteOffImage = UIImage(named: "favorite_off") as UIImage
     let retweetOnImage = UIImage(named: "retweet_on") as UIImage
@@ -31,12 +37,16 @@ class ViewTweetViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         populateUI()
-        println(tweet.id)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        self.delegate?.didAddReplies(self, newTweets: newTweets)
+
     }
 
     @IBAction func onReply(sender: AnyObject) {
@@ -87,6 +97,7 @@ class ViewTweetViewController: UIViewController {
         if tweet.isRetweeted == true {
             retweetButton.setImage(retweetOnImage, forState: UIControlState.Normal)
         }
+        userImageView.layer.cornerRadius = 5.0
         var profileImageUrl = tweet.user!.profileImageUrl
         userImageView.setImageWithURLRequest(NSURLRequest(URL: NSURL(string: profileImageUrl!)), placeholderImage: nil, success: { (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) -> Void in
             self.userImageView.image = image
@@ -98,12 +109,17 @@ class ViewTweetViewController: UIViewController {
             }) { (request: NSURLRequest!, response: NSHTTPURLResponse!, error: NSError!) -> Void in
         }
     }
+    
+    func didComposeNewTweet(createTweetViewController: CreateTweetViewController, tweet: Tweet) {
+        newTweets.append(tweet)
+    }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         // Get the new view controller using segue.destinationViewController.
         var destinationViewController = segue.destinationViewController as UINavigationController
         var createTweetViewController = destinationViewController.viewControllers![0] as CreateTweetViewController
         createTweetViewController.replyToTweet = tweet as Tweet
+        createTweetViewController.delegate = self
     }
 
 }
