@@ -21,8 +21,9 @@ class MainViewController: UIViewController {
 
     @IBOutlet weak var sideBarLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var viewContainerTrailingConstraint: NSLayoutConstraint!
-    var homeViewController: UIViewController!
-    var profileViewController: UIViewController!
+    var homeNavigationViewController: UIViewController!
+    var profileViewNavigationController: UIViewController!
+    var mentionsNavigationViewController: UIViewController!
 
     var activeViewController: UIViewController? {
         didSet(oldViewControllerOrNil) {
@@ -46,9 +47,18 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         var storyboard = UIStoryboard(name: "Main", bundle: nil)
-        homeViewController = storyboard.instantiateViewControllerWithIdentifier("TwitterFeedNavigationViewController") as UIViewController
-        profileViewController = storyboard.instantiateViewControllerWithIdentifier("ProfileNavigationController") as UINavigationController
-        self.activeViewController = self.homeViewController
+        
+        // Create all view controllers
+        homeNavigationViewController = storyboard.instantiateViewControllerWithIdentifier("TwitterFeedNavigationViewController") as UIViewController
+        profileViewNavigationController = storyboard.instantiateViewControllerWithIdentifier("ProfileNavigationController") as UIViewController
+        mentionsNavigationViewController = storyboard.instantiateViewControllerWithIdentifier("TwitterFeedNavigationViewController") as UIViewController
+
+        // Let the home view controller know that we want to see the mentions view
+        var mentionsViewController = mentionsNavigationViewController.childViewControllers[0] as TwitterFeedViewController
+        mentionsViewController.isMentionsView = true
+        
+        // Set default home view controller
+        self.activeViewController = self.homeNavigationViewController
         
         var profileImageUrl = User.currentUser?.profileImageUrl!
         sidebarProfileImage.setImageWithURLRequest(NSURLRequest(URL: NSURL(string: profileImageUrl!)), placeholderImage: nil, success: { (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) -> Void in
@@ -67,12 +77,16 @@ class MainViewController: UIViewController {
 
     @IBAction func onSidebarButtonClicked(sender: UIButton) {
         if sender == sidebarProfileButton {
-            if self.activeViewController != self.profileViewController {
-                self.activeViewController = self.profileViewController
+            if self.activeViewController != self.profileViewNavigationController {
+                self.activeViewController = self.profileViewNavigationController
             }
         } else if sender == sidebarHomeButton {
-            if self.activeViewController != self.homeViewController {
-                self.activeViewController = self.homeViewController
+            if self.activeViewController != self.homeNavigationViewController {
+                self.activeViewController = self.homeNavigationViewController
+            }
+        } else if sender == sidebarMentionsButton {
+            if self.activeViewController != self.mentionsNavigationViewController {
+                self.activeViewController = self.mentionsNavigationViewController
             }
         }
 

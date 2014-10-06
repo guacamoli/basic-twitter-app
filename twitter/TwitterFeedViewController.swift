@@ -28,8 +28,12 @@ class TwitterFeedViewController: UIViewController, UITableViewDelegate, UITableV
         // Show loading spinner
         MBProgressHUD.showHUDAddedTo(self.twitterFeedTableView, animated: true)
 
-        // Make request to get home timeline
-        requestHomeTimeline()
+        if isMentionsView == true {
+            requestMentionsTimeline()
+        } else {
+            // Make request to get home timeline
+            requestHomeTimeline()
+        }
 
         // Set up table view delegates
         twitterFeedTableView.delegate = self
@@ -102,7 +106,11 @@ class TwitterFeedViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func refresh(sender: AnyObject) {
-        requestHomeTimeline()
+        if isMentionsView == true {
+            requestMentionsTimeline()
+        } else {
+            requestHomeTimeline()
+        }
     }
 
     func requestHomeTimeline() {
@@ -120,20 +128,50 @@ class TwitterFeedViewController: UIViewController, UITableViewDelegate, UITableV
         })
     }
     
+    func requestMentionsTimeline() {
+        TwitterClient.sharedInstance.mentionsTimeLine(nil, completion: { (tweets, error) -> () in
+            if error == nil {
+                // If there was no error, save the tweets, reload table data, and hide the loading spinner
+                self.tweets = tweets!
+                self.twitterFeedTableView.reloadData()
+                // Hide loading spinner
+                MBProgressHUD.hideHUDForView(self.twitterFeedTableView, animated: true)
+                self.twitterFeedTableView.hidden = false
+            }
+            
+            self.refreshControl.endRefreshing()
+        })
+    }
+    
     func requestMoreData() {
         var lastTweetIndex = tweets.count - 1
         var lastTweetId = String(tweets[lastTweetIndex].id!)
         var params = ["max_id": lastTweetId]
-        TwitterClient.sharedInstance.homeTimeLineWithParams(params, completion: { (tweets, error) -> () in
-            if error == nil {
-                // If there was no error, append the tweets, reload table data
-                for tweet in tweets! {
-                    self.tweets.append(tweet)
+        
+        if isMentionsView == true {
+            TwitterClient.sharedInstance.mentionsTimeLine(params, completion: { (tweets, error) -> () in
+                if error == nil {
+                    // If there was no error, append the tweets, reload table data
+                    for tweet in tweets! {
+                        self.tweets.append(tweet)
+                    }
+                    
+                    self.twitterFeedTableView.reloadData()
                 }
+            })
+        } else {
+            TwitterClient.sharedInstance.homeTimeLineWithParams(params, completion: { (tweets, error) -> () in
+                if error == nil {
+                    // If there was no error, append the tweets, reload table data
+                    for tweet in tweets! {
+                        self.tweets.append(tweet)
+                    }
+                    
+                    self.twitterFeedTableView.reloadData()
+                }
+            })
+        }
 
-                self.twitterFeedTableView.reloadData()
-            }
-        })
     }
 
     // MARK: - Navigation
