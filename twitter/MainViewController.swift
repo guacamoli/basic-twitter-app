@@ -12,6 +12,12 @@ class MainViewController: UIViewController {
     
     @IBOutlet weak var viewContainer: UIView!
     @IBOutlet weak var sideBarView: UIView!
+    @IBOutlet weak var sidebarProfileImage: UIImageView!
+    @IBOutlet weak var sidebarUserName: UILabel!
+    @IBOutlet weak var sidebarUserSceennameLabel: UILabel!
+    @IBOutlet weak var sidebarHomeButton: UIButton!
+    @IBOutlet weak var sidebarMentionsButton: UIButton!
+    @IBOutlet weak var sidebarProfileButton: UIButton!
 
     @IBOutlet weak var sideBarLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var viewContainerTrailingConstraint: NSLayoutConstraint!
@@ -24,6 +30,7 @@ class MainViewController: UIViewController {
                 oldVC.willMoveToParentViewController(nil)
                 oldVC.view.removeFromSuperview()
                 oldVC.removeFromParentViewController()
+                self.view.layoutIfNeeded()
             }
             if let newVC = activeViewController {
                 self.addChildViewController(newVC)
@@ -31,6 +38,7 @@ class MainViewController: UIViewController {
                 newVC.view.frame = self.viewContainer.bounds
                 self.viewContainer.addSubview(newVC.view)
                 newVC.didMoveToParentViewController(self)
+                self.view.layoutIfNeeded()
             }
         }
     }
@@ -38,33 +46,47 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         var storyboard = UIStoryboard(name: "Main", bundle: nil)
-        homeViewController = storyboard.instantiateViewControllerWithIdentifier("TwitterFeedViewController") as TwitterFeedViewController
+        homeViewController = storyboard.instantiateViewControllerWithIdentifier("TwitterFeedNavigationViewController") as UIViewController
         profileViewController = storyboard.instantiateViewControllerWithIdentifier("ProfileNavigationController") as UINavigationController
         self.activeViewController = self.homeViewController
+        
+        var profileImageUrl = User.currentUser?.profileImageUrl!
+        sidebarProfileImage.setImageWithURLRequest(NSURLRequest(URL: NSURL(string: profileImageUrl!)), placeholderImage: nil, success: { (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) -> Void in
+            self.sidebarProfileImage.image = image
+            }) { (request: NSURLRequest!, response: NSHTTPURLResponse!, error: NSError!) -> Void in
+        }
+        
+        sidebarUserName.text = User.currentUser?.name!
+        sidebarUserSceennameLabel.text = User.currentUser?.screenname!
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+
+    @IBAction func onSidebarButtonClicked(sender: UIButton) {
+        if sender == sidebarProfileButton {
+            if self.activeViewController != self.profileViewController {
+                self.activeViewController = self.profileViewController
+            }
+        } else if sender == sidebarHomeButton {
+            if self.activeViewController != self.homeViewController {
+                self.activeViewController = self.homeViewController
+            }
+        }
+
+        hideSideBar()
+    }
     
-    @IBAction func onHamburger(sender: UIBarButtonItem) {
+    @IBAction func onSwipe(sender: UISwipeGestureRecognizer) {
         if sideBarLeadingConstraint.constant != 0 {
             showSidebar()
         } else {
             hideSideBar()
         }
     }
-    
-    @IBAction func onProfile(sender: UIButton) {
-        self.activeViewController = self.profileViewController
-        hideSideBar()
-    }
 
-    @IBAction func onMentions(sender: UIButton) {
-//        homeViewController.isMentions = true
-    }
-    
     func hideSideBar() {
         UIView.animateWithDuration(0.35, animations: { () -> Void in
             self.sideBarLeadingConstraint.constant = -200

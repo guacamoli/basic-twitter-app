@@ -26,7 +26,6 @@ class User: NSObject {
     
     init(dictionary: NSDictionary) {
         self.allData = dictionary
-        println(dictionary)
         location = dictionary["location"] as? String
         name = dictionary["name"] as? String
         screenname = dictionary["screen_name"] as? String
