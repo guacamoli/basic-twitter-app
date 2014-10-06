@@ -8,7 +8,12 @@
 
 import UIKit
 
+protocol TweetCellDelegate {
+    func didTapOnUserImage(tweetCell: TweetCell, screenname: String)
+}
+
 class TweetCell: UITableViewCell, TTTAttributedLabelDelegate {
+    var delegate: TweetCellDelegate? = nil
 
     @IBOutlet weak var userImageView: UIImageView!
     @IBOutlet weak var tweetTextLabel: TTTAttributedLabel!
@@ -65,6 +70,7 @@ class TweetCell: UITableViewCell, TTTAttributedLabelDelegate {
             } else {
                 retweetButton.setImage(retweetOffImage, forState: UIControlState.Normal)
             }
+
             var profileImageUrl = info.user!.profileImageUrl
             userImageView.alpha = 0.0
             userImageView.setImageWithURLRequest(NSURLRequest(URL: NSURL(string: profileImageUrl!)), placeholderImage: nil, success: { (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) -> Void in
@@ -76,7 +82,10 @@ class TweetCell: UITableViewCell, TTTAttributedLabelDelegate {
                 })
                 }) { (request: NSURLRequest!, response: NSHTTPURLResponse!, error: NSError!) -> Void in
             }
-
+            
+            var tapGestureRecognizer = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
+            tapGestureRecognizer.delegate = self
+            userImageView.addGestureRecognizer(tapGestureRecognizer)
         }
     }
     
@@ -84,12 +93,9 @@ class TweetCell: UITableViewCell, TTTAttributedLabelDelegate {
         UIApplication.sharedApplication().openURL(result.URL!)
     }
 
-    func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
-        // Get the new view controller using segue.destinationViewController.
-        var destinationViewController = segue.destinationViewController as UINavigationController
-        if segue.identifier == "sahil" {
-            var viewTweetViewController = destinationViewController.viewControllers![0] as CreateTweetViewController
-        }
+    func handleTap(sender: UITapGestureRecognizer) {
+        var userScreenName = self.tweetInfo.user?.screenname
+        self.delegate?.didTapOnUserImage(self, screenname: userScreenName!)
     }
 
     @IBAction func onRetweet(sender: AnyObject) {

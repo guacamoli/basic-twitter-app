@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MainViewController: UIViewController {
+class MainViewController: UIViewController, TwitterFeedViewControllerDelegate {
     
     @IBOutlet weak var viewContainer: UIView!
     @IBOutlet weak var sideBarView: UIView!
@@ -53,9 +53,14 @@ class MainViewController: UIViewController {
         profileViewNavigationController = storyboard.instantiateViewControllerWithIdentifier("ProfileNavigationController") as UIViewController
         mentionsNavigationViewController = storyboard.instantiateViewControllerWithIdentifier("TwitterFeedNavigationViewController") as UIViewController
 
+        var homeViewController = homeNavigationViewController.childViewControllers[0] as TwitterFeedViewController
+        homeViewController.delegate = self
+        
+        
         // Let the home view controller know that we want to see the mentions view
         var mentionsViewController = mentionsNavigationViewController.childViewControllers[0] as TwitterFeedViewController
         mentionsViewController.isMentionsView = true
+        mentionsViewController.delegate = self
         
         // Set default home view controller
         self.activeViewController = self.homeNavigationViewController
@@ -75,9 +80,18 @@ class MainViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    func didRequestUserProfileView(twitterFeedViewController: TwitterFeedViewController, forScreenname: String) {
+        var profileViewController = profileViewNavigationController.childViewControllers[0] as ProfileViewController
+        profileViewController.screenname = forScreenname
+        self.activeViewController = self.profileViewNavigationController
+    }
+
     @IBAction func onSidebarButtonClicked(sender: UIButton) {
         if sender == sidebarProfileButton {
-            if self.activeViewController != self.profileViewNavigationController {
+            var profileViewController = profileViewNavigationController.childViewControllers[0] as ProfileViewController
+            var myScreenname = User.currentUser!.screenname!
+            if self.activeViewController != self.profileViewNavigationController || profileViewController.screenname != myScreenname {
+                profileViewController.screenname = myScreenname
                 self.activeViewController = self.profileViewNavigationController
             }
         } else if sender == sidebarHomeButton {

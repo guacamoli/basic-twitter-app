@@ -31,7 +31,6 @@ class ProfileHeaderCell: UITableViewCell {
         var profileImageUrl = user.profileImageUrl
         var headerImageUrl = user.headerImageUrl
 
-        println(headerImageUrl)
         userImageView.alpha = 0.0
         userImageView.setImageWithURLRequest(NSURLRequest(URL: NSURL(string: profileImageUrl!)), placeholderImage: nil, success: { (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) -> Void in
             self.userImageView.image = image

@@ -11,30 +11,31 @@ import UIKit
 class ProfileViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet weak var profileTableView: UITableView!
     var tweets: [Tweet] = []
-    var screenname: String!
+    var user: User!
+    var screenname: String! {
+        willSet(newScreenname) {
+            TwitterClient.sharedInstance.profileTimeLineWithParams(["screen_name": newScreenname], completion: { (tweets, error) -> () in
+                if error == nil {
+                    // If there was no error, save the tweets, reload table data, and hide the loading spinner
+                    self.tweets = tweets!
+                    self.profileTableView.reloadData()
+                    self.profileTableView.hidden = false
+                    self.view.layoutIfNeeded()
+                }
+            })
+        }
+    }
 
     override func viewDidLoad() {
-        self.profileTableView.hidden = true
-        screenname = User.currentUser!.screenname
         super.viewDidLoad()
-        TwitterClient.sharedInstance.profileTimeLineWithParams(["screen_name": screenname], completion: { (tweets, error) -> () in
-            if error == nil {
-                // If there was no error, save the tweets, reload table data, and hide the loading spinner
-                self.tweets = tweets!
-                self.profileTableView.reloadData()
-                self.profileTableView.hidden = false
-            }
-        })
-        profileTableView.delegate = self
-        profileTableView.dataSource = self
-        profileTableView.rowHeight = UITableViewAutomaticDimension
-        
+        self.profileTableView.hidden = true
+        self.profileTableView.delegate = self
+        self.profileTableView.dataSource = self
+        self.profileTableView.rowHeight = UITableViewAutomaticDimension
         var headerCell = profileTableView.dequeueReusableCellWithIdentifier("profileHeaderCell") as ProfileHeaderCell
         profileTableView.tableHeaderView = headerCell.contentView
         
         profileTableView.tableHeaderView?.frame.size = CGSize(width: self.view.frame.size.width, height: 257)
-        
-        
         var color: UIColor = UIColor(red: CGFloat(91/255.0), green: CGFloat(171/255.0), blue: CGFloat(229/255.0), alpha: CGFloat(1))
         navigationController?.navigationBar.barTintColor = color
         navigationController?.navigationBar.tintColor = UIColor.whiteColor()

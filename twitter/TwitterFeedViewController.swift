@@ -8,8 +8,13 @@
 
 import UIKit
 
+protocol TwitterFeedViewControllerDelegate {
+    func didRequestUserProfileView(twitterFeedViewController: TwitterFeedViewController, forScreenname: String)
+}
 
-class TwitterFeedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CreateTweetViewControllerDelegate, ViewTweetViewControllerDelegate {
+class TwitterFeedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CreateTweetViewControllerDelegate, ViewTweetViewControllerDelegate, TweetCellDelegate {
+
+    var delegate: TwitterFeedViewControllerDelegate? = nil
 
     @IBOutlet weak var twitterFeedTableView: UITableView!
 
@@ -63,6 +68,7 @@ class TwitterFeedViewController: UIViewController, UITableViewDelegate, UITableV
         var cell = twitterFeedTableView.dequeueReusableCellWithIdentifier("TweetCell") as TweetCell
         cell.tweetInfo = tweets[indexPath.row] as Tweet
         cell.replyToButton.tag = indexPath.row
+        cell.delegate = self
         return cell
     }
 
@@ -78,6 +84,10 @@ class TwitterFeedViewController: UIViewController, UITableViewDelegate, UITableV
         if indexPath.row + 1 == tweets.count {
             requestMoreData()
         }
+    }
+    
+    func didTapOnUserImage(tweetCell: TweetCell, screenname: String) {
+        self.delegate?.didRequestUserProfileView(self, forScreenname: screenname)
     }
     
     @IBAction func onLogout(sender: AnyObject) {

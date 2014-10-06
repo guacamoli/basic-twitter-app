@@ -26,16 +26,13 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xMa-BH-T5N" id="PJD-6W-otI">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dgq-ak-n7H">
+                                                <imageView clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dgq-ak-n7H">
                                                     <rect key="frame" x="8" y="22" width="48" height="48"/>
                                                     <gestureRecognizers/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="48" id="Api-FK-dZK"/>
                                                         <constraint firstAttribute="height" constant="48" id="gdi-Xe-6F5"/>
                                                     </constraints>
-                                                    <connections>
-                                                        <outletCollection property="gestureRecognizers" destination="fh9-0U-6yj" appends="YES" id="lWY-ca-PNs"/>
-                                                    </connections>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="TechCrunch" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cbs-pp-5y8">
                                                     <rect key="frame" x="61" y="22" width="79" height="17"/>
@@ -242,7 +239,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3bT-9N-hgp" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="fh9-0U-6yj"/>
             </objects>
             <point key="canvasLocation" x="1117" y="1103"/>
         </scene>
