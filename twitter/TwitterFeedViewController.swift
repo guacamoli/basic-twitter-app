@@ -15,6 +15,7 @@ class TwitterFeedViewController: UIViewController, UITableViewDelegate, UITableV
 
     var refreshControl: UIRefreshControl!
     var tweets: [Tweet] = []
+    var isMentionsView = false
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)

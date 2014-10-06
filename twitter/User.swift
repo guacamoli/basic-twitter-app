@@ -17,15 +17,24 @@ class User: NSObject {
     var name: String?
     var screenname: String?
     var profileImageUrl: String?
+    var headerImageUrl: String?
+    var followersCount: Int?
+    var followingCount: Int?
     var tagLine: String?
+    var location: String?
     var allData: NSDictionary
     
     init(dictionary: NSDictionary) {
         self.allData = dictionary
+        println(dictionary)
+        location = dictionary["location"] as? String
         name = dictionary["name"] as? String
         screenname = dictionary["screen_name"] as? String
         profileImageUrl = dictionary["profile_image_url"] as? String
         tagLine = dictionary["description"] as? String
+        headerImageUrl = dictionary["profile_banner_url"] as? String
+        followersCount = dictionary["followers_count"] as? Int
+        followingCount = dictionary["friends_count"] as? Int
     }
     
     func logout() {
