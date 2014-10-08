@@ -16,41 +16,53 @@ class ProfileHeaderCell: UITableViewCell {
     @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var followingCountLabel: UILabel!
     @IBOutlet weak var followersCountLabel: UILabel!
+    @IBOutlet weak var userImageViewBorder: UIView!
 
-    var user = User.currentUser!
+    @IBOutlet weak var headerImageTopConstraint: NSLayoutConstraint!
+
+    var user: User! {
+        willSet(userInfo) {
+            // Initialization code
+            userNameLabel.text = userInfo.name
+            screennameLabel.text = "@" + userInfo.screenname!
+            cityLabel.text = userInfo.location
+            followersCountLabel.text = String(userInfo.followersCount!)
+            followingCountLabel.text = String(userInfo.followingCount!)
+            
+            var profileImageUrl = userInfo.profileImageUrl
+            var headerImageUrl = userInfo.headerImageUrl
+            
+            userImageView.alpha = 0.0
+            userImageView.setImageWithURLRequest(NSURLRequest(URL: NSURL(string: profileImageUrl!)), placeholderImage: nil, success: { (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) -> Void in
+                self.userImageView.image = image
+                
+                UIView.animateWithDuration(0.5, animations: { () -> Void in
+                    self.userImageView.alpha = 1.0
+                    }, completion: { (Bool) -> Void in
+                })
+                }) { (request: NSURLRequest!, response: NSHTTPURLResponse!, error: NSError!) -> Void in
+            }
+
+            if headerImageUrl != nil {
+                headerImageView.alpha = 0.0
+                headerImageView.setImageWithURLRequest(NSURLRequest(URL: NSURL(string: headerImageUrl!)), placeholderImage: nil, success: { (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) -> Void in
+                    self.headerImageView.image = image
+                    
+                    UIView.animateWithDuration(0.5, animations: { () -> Void in
+                        self.headerImageView.alpha = 1.0
+                        }, completion: { (Bool) -> Void in
+                    })
+                    }) { (request: NSURLRequest!, response: NSHTTPURLResponse!, error: NSError!) -> Void in
+                }
+            } else {
+                self.headerImageView.image = UIImage(named: "mobile_retina_banner_default.png")
+            }
+        }
+    }
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
-        userNameLabel.text = user.name
-        screennameLabel.text = user.screenname
-        cityLabel.text = user.location
-        followersCountLabel.text = String(user.followersCount!)
-        followingCountLabel.text = String(user.followingCount!)
 
-        var profileImageUrl = user.profileImageUrl
-        var headerImageUrl = user.headerImageUrl
-
-        userImageView.alpha = 0.0
-        userImageView.setImageWithURLRequest(NSURLRequest(URL: NSURL(string: profileImageUrl!)), placeholderImage: nil, success: { (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) -> Void in
-            self.userImageView.image = image
-            
-            UIView.animateWithDuration(0.5, animations: { () -> Void in
-                self.userImageView.alpha = 1.0
-                }, completion: { (Bool) -> Void in
-            })
-            }) { (request: NSURLRequest!, response: NSHTTPURLResponse!, error: NSError!) -> Void in
-        }
-        headerImageView.alpha = 0.0
-        headerImageView.setImageWithURLRequest(NSURLRequest(URL: NSURL(string: headerImageUrl!)), placeholderImage: nil, success: { (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) -> Void in
-            self.headerImageView.image = image
-            
-            UIView.animateWithDuration(0.5, animations: { () -> Void in
-                self.headerImageView.alpha = 1.0
-                }, completion: { (Bool) -> Void in
-            })
-            }) { (request: NSURLRequest!, response: NSHTTPURLResponse!, error: NSError!) -> Void in
-        }
     }
 
     override func setSelected(selected: Bool, animated: Bool) {

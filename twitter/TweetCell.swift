@@ -9,7 +9,7 @@
 import UIKit
 
 protocol TweetCellDelegate {
-    func didTapOnUserImage(tweetCell: TweetCell, screenname: String)
+    func didTapOnUserImage(tweetCell: TweetCell, user: User)
 }
 
 class TweetCell: UITableViewCell, TTTAttributedLabelDelegate {
@@ -95,7 +95,7 @@ class TweetCell: UITableViewCell, TTTAttributedLabelDelegate {
 
     func handleTap(sender: UITapGestureRecognizer) {
         var userScreenName = self.tweetInfo.user?.screenname
-        self.delegate?.didTapOnUserImage(self, screenname: userScreenName!)
+        self.delegate?.didTapOnUserImage(self, user: self.tweetInfo.user!)
     }
 
     @IBAction func onRetweet(sender: AnyObject) {

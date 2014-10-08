@@ -9,10 +9,11 @@
 import UIKit
 
 protocol TwitterFeedViewControllerDelegate {
-    func didRequestUserProfileView(twitterFeedViewController: TwitterFeedViewController, forScreenname: String)
+    func didRequestUserProfileView(twitterFeedViewController: TwitterFeedViewController, user: User)
 }
 
 class TwitterFeedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CreateTweetViewControllerDelegate, ViewTweetViewControllerDelegate, TweetCellDelegate {
+    @IBOutlet weak var feedNavigationItem: UINavigationItem!
 
     var delegate: TwitterFeedViewControllerDelegate? = nil
 
@@ -35,6 +36,7 @@ class TwitterFeedViewController: UIViewController, UITableViewDelegate, UITableV
 
         if isMentionsView == true {
             requestMentionsTimeline()
+            feedNavigationItem.title = "Mentions"
         } else {
             // Make request to get home timeline
             requestHomeTimeline()
@@ -86,8 +88,8 @@ class TwitterFeedViewController: UIViewController, UITableViewDelegate, UITableV
         }
     }
     
-    func didTapOnUserImage(tweetCell: TweetCell, screenname: String) {
-        self.delegate?.didRequestUserProfileView(self, forScreenname: screenname)
+    func didTapOnUserImage(tweetCell: TweetCell, user: User) {
+        self.delegate?.didRequestUserProfileView(self, user: user)
     }
     
     @IBAction func onLogout(sender: AnyObject) {
