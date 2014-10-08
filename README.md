@@ -18,4 +18,4 @@ iOS Twitter-Redux Application in Swift
 
 Walkthrough of stories:
 
-![walkthrough](https://sahil.box.com/shared/static/3y3g89f2v54o480y6hx3.gif)
+![walkthrough](https://raw.githubusercontent.com/sahilamoli/basic-twitter-app/twitter-redux/Assignment4-Twitter-Redux.gif)
