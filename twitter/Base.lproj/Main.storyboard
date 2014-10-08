@@ -1077,7 +1077,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <segue destination="DXb-RL-rJM" kind="show" identifier="loginSegue" id="adU-Ac-mWk"/>
+                        <segue destination="hsX-99-iuC" kind="show" identifier="LoginSegue" id="Bfj-CE-pBm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uSS-8u-ITp" userLabel="First Responder" sceneMemberID="firstResponder"/>
